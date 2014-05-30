@@ -1,5 +1,56 @@
+* {
+
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+
+}
+
 body {
 
-	background: #000;
+	min-width: 320px;
+
+}
+
+.image-container {
+
+	float: left;
+	width: 100%;
+	clear: both;
+
+	img {
+
+		float: left;
+		width: 12.5%;
+		height: auto;
+		border-top: 1px solid #afafaf;
+		border-right: 1px solid #afafaf;
+
+		@media screen and (max-width : 1000px) {
+
+			width: 20%;
+
+		}
+
+		@media screen and (max-width : 650px) {
+
+			width: 33.3%;
+
+		}
+
+		@media screen and (max-width : 400px) {
+
+			width: 50%;
+
+		}
+
+		@media screen and (max-width : 320px) {
+
+			width: 100%;
+
+		}
+
+	}
 
 }
