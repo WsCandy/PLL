@@ -2,15 +2,33 @@
 
 	'use strict';
 
-	function PLL() {
+	function PLL(options) {
 
 		var instance = this;
 
-		var settings = {
+		var defaults = {
 
 			tolerance : 200
 
 		}
+
+		var merge = function(options, defaults) {
+
+			var merged = {};
+
+			if(!options) {
+				return defaults;
+			}
+			for(var property in defaults) {
+				merged[property] = (options[property] ? options[property] : defaults[property]);
+			}
+			return merged;
+
+		}
+
+		var settings = merge(options, defaults);
+
+		console.log(settings);
 
 		instance.core = {
 
