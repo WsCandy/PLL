@@ -28,8 +28,6 @@
 
 		var settings = merge(options, defaults);
 
-		console.log(settings);
-
 		instance.core = {
 
 			init: function() {
