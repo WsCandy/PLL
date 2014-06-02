@@ -71,20 +71,30 @@
 			},
 
 			replaceElement : function(element, data) {
+				
+				if(element.classList.contains('loading')) {
+
+					return false;
+					
+				}
+				
+				element.classList.add('loading');
+
+				var parent = element.parentNode;
 
 				var img = new Image();
-					img.src = data['src'];
 					data.alt ? img.setAttribute('alt', data['alt']) : '';
-					
+
 				img.onload = function() {
 
-					var parent = element.parentNode;
-					
 					img.setAttribute('height', img.height);
-					img.setAttribute('width', img.width);						
+					img.setAttribute('width', img.width);
+					
 					parent.replaceChild(img, element);
 
-				}					
+				};
+				
+				img.src = data['src'];
 
 			},
 
