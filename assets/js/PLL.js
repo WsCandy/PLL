@@ -83,7 +83,6 @@
 				var parent = element.parentNode;
 
 				var img = new Image();
-					data.alt ? img.setAttribute('alt', data['alt']) : '';
 
 				img.onload = function() {
 
@@ -95,6 +94,7 @@
 				};
 				
 				img.src = data['src'];
+				data.alt ? img.setAttribute('alt', data['alt']) : '';
 
 			},
 
@@ -133,6 +133,6 @@
 
 document.addEventListener('DOMContentLoaded', function() {
 
-	new PLL();
+	var proceedural = new PLL();
 
 });
