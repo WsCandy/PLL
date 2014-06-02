@@ -31,12 +31,9 @@ body {
         width: 100%; } }
 
 .pll {
-  background: grey;
   float: left;
   height: 200px;
-  width: 12.5%;
-  border-top: 1px solid #afafaf;
-  border-right: 1px solid #afafaf; }
+  width: 12.5%; }
   @media screen and (max-width: 1000px) {
     .pll {
       width: 20%; } }
