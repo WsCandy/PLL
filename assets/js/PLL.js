@@ -2,6 +2,20 @@
 
 	'use strict';
 
+	var merge = function(options, defaults) {
+
+		var merged = {};
+
+		if(!options) {
+			return defaults;
+		}
+		for(var property in defaults) {
+			merged[property] = (options[property] ? options[property] : defaults[property]);
+		}
+		return merged;
+
+	}
+
 	function PLL(options) {
 
 		var instance = this;
@@ -9,20 +23,6 @@
 		var defaults = {
 
 			tolerance : 200
-
-		}
-
-		var merge = function(options, defaults) {
-
-			var merged = {};
-
-			if(!options) {
-				return defaults;
-			}
-			for(var property in defaults) {
-				merged[property] = (options[property] ? options[property] : defaults[property]);
-			}
-			return merged;
 
 		}
 
