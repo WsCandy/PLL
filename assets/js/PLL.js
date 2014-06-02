@@ -100,10 +100,10 @@
 
 			isVisible : function(element) {
 
-				var scrollTop = window.pageYOffset;
+				var scrollTop = window.pageYOffset - settings.tolerance;
 				var windowBottom = (document.documentElement.clientHeight + scrollTop) + settings.tolerance;
 
-				if(element.offsetTop < windowBottom) {
+				if(element.offsetTop < windowBottom && element.offsetTop > scrollTop) {
 
 					return true;
 
