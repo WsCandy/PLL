@@ -46,7 +46,7 @@
 				
 				var elements = document.getElementsByClassName('pll');
 
-				for(var i = elements.length -1; i >= 0; i--) {
+				for(var i = 0; i < elements.length; i++) {
 					
 					var currentElement = elements[i];
 					
@@ -72,12 +72,19 @@
 
 			replaceElement : function(element, data) {
 
-				var parent = element.parentNode;
-				var img = document.createElement('img');
-					img.setAttribute('src', data['src']);
+				var img = new Image();
+					img.src = data['src'];
+					data.alt ? img.setAttribute('alt', data['alt']) : '';
 					
-				data.alt ? img.setAttribute('alt', data['alt']) : '';
-				parent.replaceChild(img, element);
+				img.onload = function() {
+
+					var parent = element.parentNode;
+					
+					img.setAttribute('height', img.height);
+					img.setAttribute('width', img.width);						
+					parent.replaceChild(img, element);
+
+				}					
 
 			},
 
