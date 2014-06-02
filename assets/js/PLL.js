@@ -133,6 +133,6 @@
 
 document.addEventListener('DOMContentLoaded', function() {
 
-	var proceedural = new PLL();
+	var procedural = new PLL();
 
 });
