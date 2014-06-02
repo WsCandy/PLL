@@ -85,4 +85,10 @@ body {
 
 	}
 
+	&.loading {
+
+		background: url('../img/loader.gif') center no-repeat;
+
+	}
+
 }

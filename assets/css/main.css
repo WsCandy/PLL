@@ -46,3 +46,5 @@ body {
   @media screen and (max-width: 320px) {
     .pll {
       width: 100%; } }
+  .pll.loading {
+    background: url("../img/loader.gif") center no-repeat; }
