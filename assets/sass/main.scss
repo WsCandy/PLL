@@ -54,3 +54,38 @@ body {
 	}
 
 }
+
+.pll {
+
+	background: grey;
+	float: left;
+	height: 200px;
+	width: 12.5%;
+	border-top: 1px solid #afafaf;
+	border-right: 1px solid #afafaf;
+
+	@media screen and (max-width : 1000px) {
+
+		width: 20%;
+
+	}
+
+	@media screen and (max-width : 650px) {
+
+		width: 33.3%;
+
+	}
+
+	@media screen and (max-width : 400px) {
+
+		width: 50%;
+
+	}
+
+	@media screen and (max-width : 320px) {
+
+		width: 100%;
+
+	}
+
+}
