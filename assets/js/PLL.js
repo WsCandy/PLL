@@ -4,7 +4,6 @@
 
 	function PLL() {
 
-		var elements = document.getElementsByClassName('pll');
 		var instance = this;
 
 		var settings = {
@@ -16,6 +15,20 @@
 		instance.core = {
 
 			init: function() {
+
+				instance.core['loopThrough']();
+
+				window.onscroll = function() {
+
+					instance.core['scollEvents']();
+
+				}
+
+			},
+
+			loopThrough : function() {
+				
+				var elements = document.getElementsByClassName('pll');
 
 				for(var i = elements.length -1; i >= 0; i--) {
 					
@@ -54,7 +67,10 @@
 
 			isVisible : function(element) {
 
-				if(element.offsetTop - settings.tolerance < document.documentElement.clientHeight) {
+				var scrollTop = window.pageYOffset;
+				var windowBottom = (document.documentElement.clientHeight + scrollTop) + settings.tolerance;
+
+				if(element.offsetTop < windowBottom) {
 
 					return true;
 
@@ -63,6 +79,12 @@
 					return false;
 
 				}
+
+			},
+
+			scollEvents : function() {
+
+				instance.core['loopThrough']();
 
 			}
 
