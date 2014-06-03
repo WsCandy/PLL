@@ -79,7 +79,7 @@
 				img.style.opacity = opacity;
 				img.src = data['src'];
 
-				data.alt ? img.setAttribute('alt', data['alt']) : '';
+				if(data.alt) img.setAttribute('alt', data['alt']);
 
 				img.onload = function() {
 
