@@ -102,21 +102,15 @@
 
 				if(element.offsetTop < windowBottom && element.offsetTop > scrollTop) return true;
 
-			},
-
-			scollEvents : function() {
-
-				core_funcs['loopThrough']();
-
 			}
 
 		}
 
 		core_funcs['loopThrough']();
-		
+
 		window.onscroll = function() {
 
-			core_funcs['scollEvents']();
+			core_funcs['loopThrough']();
 
 		}
 
