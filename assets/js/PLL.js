@@ -81,8 +81,10 @@
 				element.classList.add('loading');
 
 				var parent = element.parentNode;
+				var opacity = 0;
 
 				var img = new Image();
+					img.style.opacity = opacity;
 
 				img.onload = function() {
 
@@ -91,9 +93,24 @@
 					
 					parent.replaceChild(img, element);
 
+					var increaseOp = setInterval(function() {
+
+						if(img.style.opacity < 1) {
+
+							opacity += 0.1;
+							img.style.opacity = opacity;
+							
+						} else {
+
+							clearInterval(increaseOp);
+
+						}
+
+					}, 10);
+
 				};
-				
-				img.src = data['src'];
+
+				img.src = data['src'];				
 				data.alt ? img.setAttribute('alt', data['alt']) : '';
 
 			},
