@@ -97,7 +97,7 @@
 
 						if(img.style.opacity < 1) {
 
-							opacity += 0.1;
+							opacity += 0.05;
 							img.style.opacity = opacity;
 							
 						} else {
