@@ -6,11 +6,7 @@
 
 		var merged = {};
 
-		if(!options) {
-
-			return defaults;
-
-		}
+		if(!options) return defaults;
 
 		for(var property in defaults) {
 
