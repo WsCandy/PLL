@@ -7,24 +7,29 @@
 		var merged = {};
 
 		if(!options) {
+
 			return defaults;
+
 		}
+
 		for(var property in defaults) {
+
 			merged[property] = (options[property] ? options[property] : defaults[property]);
+
 		}
+
 		return merged;
 
 	}
 
 	function PLL(options) {
 
-		var instance = this;
+		var instance = this,
+			defaults = {
 
-		var defaults = {
+				tolerance : 200
 
-			tolerance : 200
-
-		}
+			}
 
 		instance.settings = merge(options, defaults);
 
@@ -50,11 +55,7 @@
 					
 					var currentElement = elements[i];
 					
-					if (!core_funcs['isVisible'](currentElement)) {
-
-						continue;
-
-					}
+					if (!core_funcs['isVisible'](currentElement)) continue;
 
 					var imgSrc = currentElement.getAttribute('data-src');
 					var imgAlt = currentElement.getAttribute('data-alt');
@@ -72,19 +73,17 @@
 
 			replaceElement : function(element, data) {
 				
-				if(element.classList.contains('loading')) {
-
-					return false;
-					
-				}
-				
+				if(element.classList.contains('loading')) return false;				
 				element.classList.add('loading');
 
-				var parent = element.parentNode;
-				var opacity = 0;
+				var parent = element.parentNode,
+					opacity = 0,
+					img = new Image();
+				
+				img.style.opacity = opacity;
+				img.src = data['src'];
 
-				var img = new Image();
-					img.style.opacity = opacity;
+				data.alt ? img.setAttribute('alt', data['alt']) : '';
 
 				img.onload = function() {
 
@@ -110,9 +109,6 @@
 
 				};
 
-				img.src = data['src'];				
-				data.alt ? img.setAttribute('alt', data['alt']) : '';
-
 			},
 
 			isVisible : function(element) {
@@ -120,15 +116,7 @@
 				var scrollTop = window.pageYOffset - instance.settings.tolerance;
 				var windowBottom = (document.documentElement.clientHeight + scrollTop) + instance.settings.tolerance;
 
-				if(element.offsetTop < windowBottom && element.offsetTop > scrollTop) {
-
-					return true;
-
-				} else {
-
-					return false;
-
-				}
+				if(element.offsetTop < windowBottom && element.offsetTop > scrollTop) return true;
 
 			},
 
