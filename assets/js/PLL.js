@@ -31,18 +31,6 @@
 
 		var core_funcs = {
 
-			init: function() {
-
-				core_funcs['loopThrough']();
-
-				window.onscroll = function() {
-
-					core_funcs['scollEvents']();
-
-				}
-
-			},
-
 			loopThrough : function() {
 				
 				var elements = document.getElementsByClassName('pll');
@@ -124,7 +112,13 @@
 
 		}
 
-		core_funcs['init']();
+		core_funcs['loopThrough']();
+		
+		window.onscroll = function() {
+
+			core_funcs['scollEvents']();
+
+		}
 
 	}
 
