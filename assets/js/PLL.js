@@ -26,17 +26,17 @@
 
 		}
 
-		var settings = merge(options, defaults);
+		instance.settings = merge(options, defaults);
 
-		instance.core = {
+		var core = {
 
 			init: function() {
 
-				instance.core['loopThrough']();
+				core['loopThrough']();
 
 				window.onscroll = function() {
 
-					instance.core['scollEvents']();
+					core['scollEvents']();
 
 				}
 
@@ -50,7 +50,7 @@
 					
 					var currentElement = elements[i];
 					
-					if (!instance.core['isVisible'](currentElement)) {
+					if (!core['isVisible'](currentElement)) {
 
 						continue;
 
@@ -59,7 +59,7 @@
 					var imgSrc = currentElement.getAttribute('data-src');
 					var imgAlt = currentElement.getAttribute('data-alt');
 
-					instance.core['replaceElement'](elements[i], {
+					core['replaceElement'](elements[i], {
 					
 						src : imgSrc, 
 						alt : imgAlt
@@ -100,8 +100,8 @@
 
 			isVisible : function(element) {
 
-				var scrollTop = window.pageYOffset - settings.tolerance;
-				var windowBottom = (document.documentElement.clientHeight + scrollTop) + settings.tolerance;
+				var scrollTop = window.pageYOffset - instance.settings.tolerance;
+				var windowBottom = (document.documentElement.clientHeight + scrollTop) + instance.settings.tolerance;
 
 				if(element.offsetTop < windowBottom && element.offsetTop > scrollTop) {
 
@@ -117,13 +117,19 @@
 
 			scollEvents : function() {
 
-				instance.core['loopThrough']();
+				core['loopThrough']();
 
 			}
 
 		}
 
-		instance.core['init']();
+		core['init']();
+
+	}
+
+	PLL.prototype.tester = function() {
+
+		console.log(this.settings);
 
 	}
 
@@ -134,5 +140,7 @@
 document.addEventListener('DOMContentLoaded', function() {
 
 	var procedural = new PLL();
+
+	procedural.tester();
 
 });
