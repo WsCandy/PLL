@@ -10,7 +10,7 @@
 
 		for(var property in defaults) {
 
-			merged[property] = (options[property] ? options[property] : defaults[property]);
+			merged[property] = (options[property] != undefined ? options[property] : defaults[property]);
 
 		}
 
