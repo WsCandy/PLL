@@ -85,6 +85,7 @@
 							
 						} else {
 
+							img.style.opacity = 1;
 							clearInterval(increaseOp);
 
 						}
@@ -99,8 +100,9 @@
 
 				var scrollTop = window.pageYOffset - instance.settings.tolerance;
 				var windowBottom = (document.documentElement.clientHeight + scrollTop) + instance.settings.tolerance;
+				var imageBottom = (element.getBoundingClientRect().bottom + document.body.scrollTop) + instance.settings.tolerance;
 
-				if(element.offsetTop < windowBottom && element.offsetTop > scrollTop) return true;
+				if(element.offsetTop < windowBottom && imageBottom > scrollTop) return true;
 
 			}
 
