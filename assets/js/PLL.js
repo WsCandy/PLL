@@ -23,7 +23,8 @@
 		var instance = this,
 			defaults = {
 
-				tolerance : 200
+				tolerance : 200,
+				fade : true
 
 			}
 
@@ -63,34 +64,39 @@
 				var parent = element.parentNode,
 					opacity = 0,
 					img = new Image();
-				
-				img.style.opacity = opacity;
+
+				if(instance.settings.fade) img.style.opacity = opacity;
+
 				img.src = data['src'];
 
 				if(data.alt) img.setAttribute('alt', data['alt']);
 
-				img.onload = function() {
+					img.onload = function() {
 
-					img.setAttribute('height', img.height);
-					img.setAttribute('width', img.width);
+						img.setAttribute('height', img.height);
+						img.setAttribute('width', img.width);
+						
+						parent.replaceChild(img, element);
 					
-					parent.replaceChild(img, element);
+						if(instance.settings.fade) {
 
-					var increaseOp = setInterval(function() {
+							var increaseOp = setInterval(function() {
 
-						if(img.style.opacity < 1) {
+								if(img.style.opacity < 1) {
 
-							opacity += 0.05;
-							img.style.opacity = opacity;
-							
-						} else {
+									opacity += 0.05;
+									img.style.opacity = opacity;
+									
+								} else {
 
-							img.style.opacity = 1;
-							clearInterval(increaseOp);
+									img.style.opacity = 1;
+									clearInterval(increaseOp);
+
+								}
+
+							}, 10);
 
 						}
-
-					}, 10);
 
 				};
 
