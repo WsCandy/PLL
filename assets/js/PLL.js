@@ -24,7 +24,8 @@
 			defaults = {
 
 				tolerance : 200,
-				fade : true
+				fade : true,
+				imageSwap : false
 
 			}
 
@@ -67,7 +68,15 @@
 
 				if(instance.settings.fade) img.style.opacity = opacity;
 
-				img.src = data['src'];
+				if(instance.settings.imageSwap) {
+
+					img.src = core_funcs['imageSwap'](img, data['src']);
+
+				} else {
+
+					img.src = data['src'];
+
+				}
 
 				if(data.alt) img.setAttribute('alt', data['alt']);
 
@@ -110,6 +119,12 @@
 
 				if(element.offsetTop < windowBottom && imageBottom > scrollTop) return true;
 
+			},
+
+			imageSwap: function(img, src) {
+
+				return src;
+
 			}
 
 		}
@@ -130,6 +145,10 @@
 
 document.addEventListener('DOMContentLoaded', function() {
 
-	var	procedural = new PLL();
+	var	procedural = new PLL({
+
+		imageSwap: true
+
+	});
 
 });
