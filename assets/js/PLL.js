@@ -106,9 +106,10 @@
 
 				var scrollTop = window.pageYOffset - instance.settings.tolerance;
 				var windowBottom = (document.documentElement.clientHeight + scrollTop) + instance.settings.tolerance;
-				var imageBottom = (element.getBoundingClientRect().bottom + document.body.scrollTop) + instance.settings.tolerance;
+				var elementTop = (element.getBoundingClientRect().top + document.body.scrollTop) - instance.settings.tolerance;
+				var elementBottom = (element.getBoundingClientRect().bottom + document.body.scrollTop) +instance.settings.tolerance;
 
-				if(element.offsetTop < windowBottom && imageBottom > scrollTop) return true;
+				if(elementBottom < windowBottom && elementTop > scrollTop) return true;
 
 			}
 
