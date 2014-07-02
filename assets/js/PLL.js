@@ -109,7 +109,7 @@
 				var elementTop = (element.getBoundingClientRect().top + document.body.scrollTop) - instance.settings.tolerance;
 				var elementBottom = (element.getBoundingClientRect().bottom + document.body.scrollTop) +instance.settings.tolerance;
 
-				if(elementBottom < windowBottom && elementTop > scrollTop) return true;
+				if(elementTop < windowBottom && elementBottom > scrollTop) return true;
 
 			}
 
