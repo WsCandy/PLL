@@ -2,6 +2,8 @@
 
 	'use strict';
 
+	var version = '1.0.1';
+
 	var merge = function(options, defaults) {
 
 		var merged = {};
