@@ -1,10 +1,17 @@
 PLL 
 ===
 
-Version 1.0
+Propeller's personal lazy loading is here! See below for all the docs. Completely dependency free.
+
+Version 1.0.1
 ---
 
-Propeller's personal lazy loading is here! See below for all the docs. Completely dependancy free.
+Improved the isVisible function to now be more reliable and accurate.
+
+#####Release History
+
+https://github.com/WsCandy/zRSv2/releases
+
 
 Basic Implementation:
 ---
@@ -70,4 +77,4 @@ PLL supports a few options, more will be added as development progresses. They a
 Customisation:
 ---
 
-There are a few things you can do to customise the appearance of loading images, a 'loading' class is added to all elements while the data is being recieved and can be styled with ajax loaders or animations.
+There are a few things you can do to customise the appearance of loading images, a 'loading' class is added to all elements while the data is being received and can be styled with ajax loaders or animations.
