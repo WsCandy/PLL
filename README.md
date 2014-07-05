@@ -10,7 +10,7 @@ Improved the isVisible function to now be more reliable and accurate.
 
 #####Release History
 
-https://github.com/WsCandy/zRSv2/releases
+https://github.com/WsCandy/PLL/releases
 
 
 Basic Implementation:
