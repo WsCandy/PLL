@@ -1,9 +1,9 @@
 PLL 
 ===
 
-Propeller's personal lazy loading is here! See below for all the docs. Completely dependency free.
+Propeller's personal lazy loading is here! See below for all the docs. Completely dependency free with backward compatibility up to IE8.
 
-Version 1.0.1
+Version 1.1.0
 ---
 
 Improved the isVisible function to now be more reliable and accurate.
