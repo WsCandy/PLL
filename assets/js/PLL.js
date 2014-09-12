@@ -2,7 +2,7 @@
 
 	'use strict';
 
-	var version = '1.0.1';
+	var version = '1.1.0';
 
 	var merge = function(options, defaults) {
 
@@ -21,7 +21,7 @@
 	}
 
 	function PLL(options) {
-
+		
 		var instance = this,
 			defaults = {
 
@@ -32,25 +32,57 @@
 
 		instance.settings = merge(options, defaults);
 
-		var core_funcs = {
+		var allElements, elements;
 
-			loopThrough : function() {
-				
-				var elements = document.getElementsByClassName('pll');
+		instance.check = function() {
+
+			instance.core_funcs['loopThrough']();
+
+		}
+		
+		instance.core_funcs = {
+
+			init: function() {
+
+				allElements = document.querySelectorAll('.pll');
+				elements = [];
+
+				instance.core_funcs['loopThrough']('load');
+
+			},
+
+			loopThrough : function(action) {
+
+				for(var i = 0; i < allElements.length; i++) {
+
+					elements[i] = allElements[i];
+
+				}
 
 				for(var i = 0; i < elements.length; i++) {
-					
+				
 					var currentElement = elements[i];
-					
-					if (!core_funcs['isVisible'](currentElement)) continue;
+					var visible = instance.core_funcs['isVisible'](currentElement);
+
+					if(action == 'load' && visible) {
+
+						instance.core_funcs.setDefaultDimensions(currentElement, currentElement.getAttribute('data-src')); 
+						continue;
+
+					}
+
+					if (!visible || (currentElement.classList ? (currentElement.classList.contains('pll__loaded')) : (new RegExp('(^| )' + 'pll__loaded' + '( |$)', 'gi').test(currentElement.className))) || !document.body.contains(currentElement)) continue;
 
 					var imgSrc = currentElement.getAttribute('data-src');
 					var imgAlt = currentElement.getAttribute('data-alt');
+					var imgClasses = currentElement.getAttribute('class');
 
-					core_funcs['replaceElement'](elements[i], {
+					instance.core_funcs['replaceElement'](currentElement, {
 					
 						src : imgSrc, 
-						alt : imgAlt
+						alt : imgAlt,
+						classes : imgClasses,
+						index : i
 
 					});
 
@@ -60,8 +92,9 @@
 
 			replaceElement : function(element, data) {
 				
-				if(element.classList.contains('loading')) return false;				
-				element.classList.add('loading');
+				if(element.parentNode.classList ? (element.parentNode.classList.contains('loading')) : (new RegExp('(^| )' + 'loading' + '( |$)', 'gi').test(element.parentNode.className))) return false;				
+				
+				element.classList ? element.classList.add('loading') : element.className = 'loading ' + element.className;
 
 				var parent = element.parentNode,
 					opacity = 0,
@@ -73,55 +106,81 @@
 
 				if(data.alt) img.setAttribute('alt', data['alt']);
 
-					img.onload = function() {
-
-						img.setAttribute('height', img.height);
-						img.setAttribute('width', img.width);
-						
-						parent.replaceChild(img, element);
+				var classes = data['classes'].replace('pll', 'pll__loaded');				
+				
+				// img.onload = function() {
 					
-						if(instance.settings.fade) {
+					parent.replaceChild(img, element);
+					
+					img.className = classes;
+					elements[data.index] = img;
 
-							var increaseOp = setInterval(function() {
+					if(instance.settings.fade) {
 
-								if(img.style.opacity < 1) {
+						var increaseOp = setInterval(function() {
 
-									opacity += 0.05;
-									img.style.opacity = opacity;
-									
-								} else {
+							if(img.style.opacity < 1) {
 
-									img.style.opacity = 1;
-									clearInterval(increaseOp);
+								opacity += 0.05;
+								img.style.opacity = opacity;
+								
+							} else {
 
-								}
+								img.style.opacity = 1;
+								clearInterval(increaseOp);
 
-							}, 10);
+							}
 
-						}
+						}, 10);
 
-				};
+					}
+
+					$('.social-section--scrollin').scrollin('update');
+
+				// };
 
 			},
 
 			isVisible : function(element) {
 
-				var scrollTop = window.pageYOffset - instance.settings.tolerance;
-				var windowBottom = (document.documentElement.clientHeight + scrollTop) + instance.settings.tolerance;
-				var elementTop = (element.getBoundingClientRect().top + document.body.scrollTop) - instance.settings.tolerance;
-				var elementBottom = (element.getBoundingClientRect().bottom + document.body.scrollTop) +instance.settings.tolerance;
+				var top = element.offsetTop - (window.pageYOffset || document.documentElement.scrollTop),
+					bottom = (element.offsetTop + element.offsetHeight) - (window.pageYOffset || document.documentElement.scrollTop),
+					scrollTop = document.documentElement.scrollTop - instance.settings.tolerance,
+					windowBottom = (document.documentElement.clientHeight + scrollTop) + instance.settings.tolerance,
+					elementTop = (top + document.documentElement.scrollTop) - instance.settings.tolerance,
+					elementBottom = (bottom + document.documentElement.scrollTop) + instance.settings.tolerance;
 
 				if(elementTop < windowBottom && elementBottom > scrollTop) return true;
 
-			}
+			}, 
+
+			setDefaultDimensions: function(element, source) {
+
+				var img = new Image();
+					img.src = source;
+
+				img.onload = function() {
+
+					element.style.width = img.width + 'px';
+					element.style.height = img.height + 'px';
+
+				}
+
+			} 
 
 		}
 
-		core_funcs['loopThrough']();
+		instance.core_funcs['init']();
 
 		window.onscroll = function() {
 
-			core_funcs['loopThrough']();
+			instance.core_funcs['loopThrough']();				
+
+		}
+
+		window.onload = function() {
+
+			instance.core_funcs['loopThrough']();
 
 		}
 
@@ -131,8 +190,31 @@
 
 })(window, document);
 
-document.addEventListener('DOMContentLoaded', function() {
+if (document.addEventListener) {
+		
+	  document.addEventListener('DOMContentLoaded', function() {
 
-	var	procedural = new PLL();
+		window.procedural = new PLL({
 
-});
+			tolerance: 0
+
+		});
+	  	
+	  });
+
+} else {
+
+	window.onload = function() {
+
+		window.procedural = new PLL({
+
+			tolerance: 0,
+			fade: false
+
+		});
+
+		procedural.core_funcs['loopThrough']();
+			
+	}
+
+}
