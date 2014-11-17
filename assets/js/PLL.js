@@ -25,7 +25,7 @@
 		var instance = this,
 			defaults = {
 
-				tolerance : 150,
+				tolerance : 0,
 				fade : true
 
 			}
