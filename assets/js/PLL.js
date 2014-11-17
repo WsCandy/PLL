@@ -44,7 +44,7 @@
 
 			init: function() {
 
-				elements = document.querySelectorAll('.pll');
+				elements = document.getElementsByTagName('img');
 				instance.core_funcs['loopThrough']();
 
 			},
@@ -54,13 +54,12 @@
 				for(var i = 0; i < elements.length; i++) {
 				
 					var currentElement = elements[i],
-						visible = instance.core_funcs['isVisible'](currentElement);
-
-					if (!visible || (currentElement.classList ? (currentElement.classList.contains('pll__loaded')) : (new RegExp('(^| )' + 'pll__loaded' + '( |$)', 'gi').test(currentElement.className))) || !document.body.contains(currentElement)) continue;
-
-					var imgSrc = currentElement.getAttribute('data-src'),
+						visible = instance.core_funcs['isVisible'](currentElement),
+						imgSrc = currentElement.getAttribute('pll-src'),
 						imgAlt = currentElement.getAttribute('alt'),
 						imgClasses = currentElement.getAttribute('class');
+
+					if (!imgSrc || !visible || (currentElement.classList ? (currentElement.classList.contains('pll__loaded')) : (new RegExp('(^| )' + 'pll__loaded' + '( |$)', 'gi').test(currentElement.className))) || !document.body.contains(currentElement)) continue;
 
 					instance.core_funcs['preLoad'](currentElement, {
 					
@@ -81,15 +80,16 @@
 
 				var parent = element.parentNode,
 					opacity = 0,				
-					classes = data['classes'].replace('pll', 'pll__loaded');				
+					classes = data['img'].classList ? data['img'].classList.add('pll__loaded') : data['img'].className = 'pll__loaded ' + data['img'].className;
 				
 				data['img'].width = data['width'];
 				data['img'].height = data['height'];
 				
 				if(data.alt) data['img'].setAttribute('alt', data['alt']);
 				
-				if(instance.settings.fade) data['img'].style.opacity = opacity;
 				if(instance.settings.fade) {
+					
+					data['img'].style.opacity = opacity;
 
 					var increaseOp = setInterval(function() {
 
@@ -127,7 +127,7 @@
 						img: imgObj[index],
 						src: imgObj[index].src = data['src'],
 						alt: data['alt'],
-						classes: imgObj[index].className = data['classes'],
+						classes: imgObj[index].className = data['classes'] ? data['classes'] : '',
 						width: imgObj[index].width,
 						height: imgObj[index].height
 
