@@ -25,14 +25,14 @@
 		var instance = this,
 			defaults = {
 
-				tolerance : 200,
+				tolerance : 150,
 				fade : true
 
 			}
 
 		instance.settings = merge(options, defaults);
 
-		var allElements, elements;
+		var elements, imgObj = {};
 
 		instance.check = function() {
 
@@ -44,100 +44,100 @@
 
 			init: function() {
 
-				allElements = document.querySelectorAll('.pll');
-				elements = [];
-
-				instance.core_funcs['loopThrough']('load');
+				elements = document.querySelectorAll('.pll');
+				instance.core_funcs['loopThrough']();
 
 			},
 
-			loopThrough : function(action) {
-
-				for(var i = 0; i < allElements.length; i++) {
-
-					elements[i] = allElements[i];
-
-				}
+			loopThrough : function() {
 
 				for(var i = 0; i < elements.length; i++) {
 				
-					var currentElement = elements[i];
-					var visible = instance.core_funcs['isVisible'](currentElement);
-
-					if(action == 'load' && visible) {
-
-						instance.core_funcs.setDefaultDimensions(currentElement, currentElement.getAttribute('data-src')); 
-						continue;
-
-					}
+					var currentElement = elements[i],
+						visible = instance.core_funcs['isVisible'](currentElement);
 
 					if (!visible || (currentElement.classList ? (currentElement.classList.contains('pll__loaded')) : (new RegExp('(^| )' + 'pll__loaded' + '( |$)', 'gi').test(currentElement.className))) || !document.body.contains(currentElement)) continue;
 
-					var imgSrc = currentElement.getAttribute('data-src');
-					var imgAlt = currentElement.getAttribute('data-alt');
-					var imgClasses = currentElement.getAttribute('class');
+					var imgSrc = currentElement.getAttribute('data-src'),
+						imgAlt = currentElement.getAttribute('alt'),
+						imgClasses = currentElement.getAttribute('class');
 
-					instance.core_funcs['replaceElement'](currentElement, {
+					instance.core_funcs['preLoad'](currentElement, {
 					
 						src : imgSrc, 
 						alt : imgAlt,
-						classes : imgClasses,
-						index : i
+						classes : imgClasses
 
-					});
+					}, i);
 
 				}
 
 			},
 
 			replaceElement : function(element, data) {
-				
+
 				if(element.parentNode.classList ? (element.parentNode.classList.contains('loading')) : (new RegExp('(^| )' + 'loading' + '( |$)', 'gi').test(element.parentNode.className))) return false;				
-				
 				element.classList ? element.classList.add('loading') : element.className = 'loading ' + element.className;
 
 				var parent = element.parentNode,
-					opacity = 0,
-					img = new Image();
-
-				if(instance.settings.fade) img.style.opacity = opacity;
-
-				img.src = data['src'];
-
-				if(data.alt) img.setAttribute('alt', data['alt']);
-
-				var classes = data['classes'].replace('pll', 'pll__loaded');				
+					opacity = 0,				
+					classes = data['classes'].replace('pll', 'pll__loaded');				
 				
-				// img.onload = function() {
+				data['img'].width = data['width'];
+				data['img'].height = data['height'];
+				
+				if(data.alt) data['img'].setAttribute('alt', data['alt']);
+				
+				if(instance.settings.fade) data['img'].style.opacity = opacity;
+				if(instance.settings.fade) {
+
+					var increaseOp = setInterval(function() {
+
+						if(data['img'].style.opacity < 1) {
+
+							opacity += 0.05;
+							data['img'].style.opacity = opacity;
+							
+						} else {
+
+							data['img'].style.opacity = 1;
+							clearInterval(increaseOp);
+
+						}
+
+					}, 10);
+
+				}
+				
+				parent.replaceChild(data['img'], element);
+
+			},
+
+			preLoad : function(element, data, index) {
+
+				if(imgObj[index]) return;
+
+				imgObj[index] = new Image();
+				imgObj[index].src = data['src'];
+
+				var loaded = function() {
+
+					var newData = {
+
+						img: imgObj[index],
+						src: imgObj[index].src = data['src'],
+						alt: data['alt'],
+						classes: imgObj[index].className = data['classes'],
+						width: imgObj[index].width,
+						height: imgObj[index].height
+
+					};
+
+					instance.core_funcs['replaceElement'](element, newData);
 					
-					parent.replaceChild(img, element);
-					
-					img.className = classes;
-					elements[data.index] = img;
+				}
 
-					if(instance.settings.fade) {
-
-						var increaseOp = setInterval(function() {
-
-							if(img.style.opacity < 1) {
-
-								opacity += 0.05;
-								img.style.opacity = opacity;
-								
-							} else {
-
-								img.style.opacity = 1;
-								clearInterval(increaseOp);
-
-							}
-
-						}, 10);
-
-					}
-
-					$('.social-section--scrollin').scrollin('update');
-
-				// };
+				imgObj[index].onload = loaded;
 
 			},
 
@@ -152,25 +152,9 @@
 
 				if(elementTop < windowBottom && elementBottom > scrollTop) return true;
 
-			}, 
-
-			setDefaultDimensions: function(element, source) {
-
-				var img = new Image();
-					img.src = source;
-
-				img.onload = function() {
-
-					element.style.width = img.width + 'px';
-					element.style.height = img.height + 'px';
-
-				}
-
-			} 
+			}
 
 		}
-
-		instance.core_funcs['init']();
 
 		window.onscroll = function() {
 
@@ -178,11 +162,7 @@
 
 		}
 
-		window.onload = function() {
-
-			instance.core_funcs['loopThrough']();
-
-		}
+		instance.core_funcs['init']();
 
 	}
 
@@ -190,31 +170,8 @@
 
 })(window, document);
 
-if (document.addEventListener) {
+window.onload = function() {
+
+	window.procedural = new PLL();
 		
-	  document.addEventListener('DOMContentLoaded', function() {
-
-		window.procedural = new PLL({
-
-			tolerance: 0
-
-		});
-	  	
-	  });
-
-} else {
-
-	window.onload = function() {
-
-		window.procedural = new PLL({
-
-			tolerance: 0,
-			fade: false
-
-		});
-
-		procedural.core_funcs['loopThrough']();
-			
-	}
-
 }
