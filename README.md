@@ -3,10 +3,10 @@ PLL
 
 Propeller's personal lazy loading is here! See below for all the docs. Completely dependency free with backward compatibility up to IE8.
 
-Version 1.1.0
+Version 2.0.0
 ---
 
-Improved the isVisible function to now be more reliable and accurate.
+Version 2 has been released, it's almost a complete rewrite, please check the docs!
 
 #####Release History
 
@@ -16,65 +16,43 @@ https://github.com/WsCandy/PLL/releases
 Basic Implementation:
 ---
 
+Version 2 will automatically scan through all the images on your site and lazy load them IF they have the pll-src attribute.
+
 #####HTML:
 
-Use the following html structure when placing images into your page, you can use any html element not just '<figure>'. 
+Use the following html structure when placing images into your page. 
 
-	<figure class="pll" data-src="http://placehold.it/400x400" data-alt="Test"></figure>
+	<img pll-src="http://placehold.it/400" alt="Test" class="your classes">
 
-'data-alt' is optional, however 'data-src' is required. A class of 'pll' on the element is also required for it to function properly.
+The native src attribute is an optional extra if you wish to load in a low res image or a blank placeholder, it will be replaced with pll-src upon showing on the page.
+
+	<img src="http://placehold.it/100" pll-src="http://placehold.it/400" alt="Test" class="your classes">
 
 #####JS:
 
-To initialise the code simply use the following code snippet:
+To initialise the code simply include the script in your page/template
 
-	document.addEventListener('DOMContentLoaded', function() {
-
-		var	procedural = new PLL();
-
-	});
-
-For IE8 support then you will need to use the following code:
-
-	if (document.addEventListener) {
-
-		document.addEventListener('DOMContentLoaded', function() {
-
-			var	procedural = new PLL();
-
-		});
-
-	} else {
-
-		document.attachEvent('onreadystatechange', function() {
-		
-			if (document.readyState === 'interactive') {
-
-				var	procedural = new PLL();
-
-			}
-
-		});
-
-	}
-
-Or you can use jQuery to initialise
-
-	$(document).ready(function() {
-
-		var	procedural = new PLL();
-
-	});
+	<script type="text/javascript" src="/assets/js/PLL.js"></script>
 
 Options:
 ---
 
 PLL supports a few options, more will be added as development progresses. They are as follows (with their default values):
 
-	tolerance: 200, // The buffer above and below the current view port that triggers loading of images, increase to have smoother loading but more images up at any time.
-	fade : true 	// Sets whether the images fade in when they load in.
+	tolerance: 0, // The buffer above and below the current view port that triggers loading of images, increase to have smoother loading but more images up at any time.
 
-Customisation:
+Options can be edited by going into PLL.js and finding where the object is created, this will later be moved once all testing has been completed.
+
+	window.PLL = new PLL({
+
+		tolerance: 0
+
+	});
+
+Methods:
 ---
 
-There are a few things you can do to customise the appearance of loading images, a 'loading' class is added to all elements while the data is being received and can be styled with ajax loaders or animations.
+PLL currently has one method, it can be invoked as follows:
+
+	PLL.check();
+	// This will perform a scan of the page and lazy load any visible images
