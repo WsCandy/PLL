@@ -1,7 +1,7 @@
 PLL 
 ===
 
-Propeller's personal lazy loading is here! See below for all the docs. Completely dependency free with backward compatibility up to IE8.
+Propeller's personal lazy loading is here! See below for all the docs. Completely dependency free with backward compatibility up to IE7.
 
 Version 2.0.0
 ---
